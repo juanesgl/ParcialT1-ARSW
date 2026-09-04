@@ -11,7 +11,8 @@ public class PiDigits {
     private static int DigitsPerSum = 8;
     private static double Epsilon = 1e-17;
 
-    
+    private static int threadsNum = 4;
+
     /**
      * Returns a range of hexadecimal digits of pi.
      * @param start The starting location of the range.
@@ -27,8 +28,15 @@ public class PiDigits {
             throw new RuntimeException("Invalid Interval");
         }
 
+        if (threadsNum <= 0){
+            throw new RuntimeException("Invalid number of threads");
+        }
+
         byte[] digits = new byte[count];
         double sum = 0;
+
+        int size = count / threadsNum;
+        int rem = count % threadsNum;
 
         for (int i = 0; i < count; i++) {
             if (i % DigitsPerSum == 0) {
@@ -58,7 +66,7 @@ public class PiDigits {
         int d = m;
         int power = n;
 
-        while (true) {
+        for (;;) {
             double term;
 
             if (power > 0) {
